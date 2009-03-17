@@ -1,4 +1,4 @@
--- $Id: cfg_bindings.lua,v 1.1 2009/03/06 19:47:27 silas Exp $
+-- $Id: cfg_bindings.lua,v 1.2 2009/03/17 22:59:52 silas Exp $
 --
 -- Bindings.
 
@@ -174,12 +174,6 @@ defbindings("WMPlex.toplevel", {
 
 	bdoc("Query for workspace to go to or create a new one."),
 	kpress(ALTMETA.."F9", "mod_query.query_workspace(_)"),
-
-	bdoc("Change keyboard to us layout"),
-	kpress(ALTMETA.."F10", "ioncore.exec_on(_, 'setxkbmap us')"),
-
-	bdoc("Change keyboard to us intl layout"),
-	kpress(ALTMETA.."F11", "ioncore.exec_on(_, 'setxkbmap us intl')"),
 
 	bdoc("Query for a client window to go to."),
 	kpress(META.."G", "mod_query.query_gotoclient(_)"),

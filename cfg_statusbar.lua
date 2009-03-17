@@ -1,4 +1,4 @@
--- $Id: cfg_statusbar.lua,v 1.1 2009/03/06 19:47:27 silas Exp $
+-- $Id: cfg_statusbar.lua,v 1.2 2009/03/17 22:59:52 silas Exp $
 
 -- Create a statusbar
 mod_statusbar.create{
@@ -9,7 +9,7 @@ mod_statusbar.create{
 	fullsize=false,
 	systray=true,
 
-	template = "[ %date || load: %load || kblayout: %kblayout ]"
+	template = "[ %date || load: %load ]"
 }
 
 mod_statusbar.launch_statusd{
