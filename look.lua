@@ -27,7 +27,7 @@ de.defstyle("frame", {
 	de.substyle("active", {
 		shadow_colour = "#006699",
 		highlight_colour = "#006699",
-		padding_colour = "black",
+		padding_colour = "#0099CC",
 		background_colour = "#ffffff",
 	}),
 	de.substyle("inactive", {
@@ -40,7 +40,7 @@ de.defstyle("frame", {
 
 de.defstyle("frame-tiled", {
 	based_on = "frame",
-	padding_pixels = 1,
+	padding_pixels = 2,
 	highlight_pixels = 0,
 	shadow_pixels = 0,
 	spacing = 0,
