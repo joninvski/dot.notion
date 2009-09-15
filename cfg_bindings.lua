@@ -96,7 +96,7 @@ defbindings("WScreen", {
 defbindings("WClientWin", {
 	submap(META.."I", {
 		bdoc("Kill client owning the client window."),
-		kpress("C", "WClientWin.kill(_)"),
+		kpress("F4", "WClientWin.kill(_)"),
 
 		bdoc("Nudge the client window. This might help with some "..
 		 "programs' resizing problems."),
@@ -124,7 +124,7 @@ defbindings("WGroupCW", {
 
 defbindings("WMPlex", {
 	bdoc("Close current object."),
-	kpress_wait(META.."C", "WRegion.rqclose_propagate(_, _sub)"),
+	kpress_wait(META.."F4", "WRegion.rqclose_propagate(_, _sub)"),
 
 	submap(META.."I", {
 		bdoc("Detach (float) or reattach an object to its previous " ..
