@@ -1,8 +1,9 @@
--- $Id: cfg_ion.lua,v 1.1 2009/03/06 19:47:27 silas Exp $
 --
 -- Ion main configuration file
+--
 
 META="Mod1+"	-- Alt
+SUBMETA="I"	-- "Submeta" variable, to be used as a prefix for some commands
 ALTMETA=""	-- No modifier for ALTMETA variable
 
 XTERM="xterm"	-- Default terminal emulator

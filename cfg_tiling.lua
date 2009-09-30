@@ -14,7 +14,7 @@ defbindings("WTiling", {
 	kpress(META.."J", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
 	kpress(META.."L", "ioncore.goto_next(_sub, 'right')"),
 	kpress(META.."H", "ioncore.goto_next(_sub, 'left')"),
-	submap(META.."I", {
+	submap(META..SUBMETA, {
 		bdoc("Split current frame horizontally."),
 		kpress("S", "WTiling.split_at(_, _sub, 'right', true)"),
 
@@ -27,7 +27,7 @@ defbindings("WTiling", {
 -- Frame bindings
 
 defbindings("WFrame.floating", {
-	submap(META.."I", {
+	submap(META..SUBMETA, {
 		bdoc("Tile frame, if no tiling exists on the workspace"),
 		kpress("B", "mod_tiling.mkbottom(_)"),
 	}),

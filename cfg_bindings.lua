@@ -29,10 +29,10 @@ defbindings("WScreen", {
 	kpress(META.."comma", "WScreen.switch_prev(_)"),
 	kpress(META.."period", "WScreen.switch_next(_)"),
 
-	submap(META.."I", {
+	submap(META..SUBMETA, {
 		bdoc("Go to first region demanding attention or previously " ..
 		     "active one."),
-		kpress("I", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
+		kpress(SUBMETA, "mod_menu.grabmenu(_, _sub, 'focuslist')"),
 
 		-- Some alternatives to command above:
 
@@ -76,7 +76,7 @@ defbindings("WScreen", {
 	bdoc("Backward-circulate focus."),
 	kpress(META.."Shift+Tab", "ioncore.goto_next(_chld, 'left')",
 	   "_chld:non-nil"),
-	submap(META.."I", { 
+	submap(META..SUBMETA, {
 	bdoc("Raise focused object, if possible."),
 	kpress("AnyModifier+R", "WRegion.rqorder(_chld, 'front')",
 	       "_chld:non-nil"),
@@ -94,7 +94,7 @@ defbindings("WScreen", {
 -- Client window bindings
 
 defbindings("WClientWin", {
-	submap(META.."I", {
+	submap(META..SUBMETA, {
 		bdoc("Kill client owning the client window."),
 		kpress("F4", "WClientWin.kill(_)"),
 
@@ -126,7 +126,7 @@ defbindings("WMPlex", {
 	bdoc("Close current object."),
 	kpress_wait(META.."F4", "WRegion.rqclose_propagate(_, _sub)"),
 
-	submap(META.."I", {
+	submap(META..SUBMETA, {
 		bdoc("Detach (float) or reattach an object to its previous " ..
 		     "location."),
 		-- By using _chld instead of _sub, we can detach/reattach
@@ -190,7 +190,7 @@ defbindings("WMPlex.toplevel", {
 -- frame bindings are found in some modules' configuration files.
 
 defbindings("WFrame", {
-	submap(META.."I", {
+	submap(META..SUBMETA, {
 		bdoc("Maximize the frame horizontally/vertically."),
 		kpress("X", "WFrame.maximize_horiz(_)"),
 		kpress("Y", "WFrame.maximize_vert(_)"),
@@ -228,7 +228,7 @@ defbindings("WFrame.toplevel", {
 	bdoc("Query for a client window to attach."),
 	kpress(META.."A", "mod_query.query_attachclient(_)"),
 
-	submap(META.."I", {
+	submap(META..SUBMETA, {
 		-- Display tab numbers when modifiers are released
 		submap_wait("ioncore.tabnum.show(_)"),
 
