@@ -3,7 +3,7 @@
 --
 
 META="Mod1+"	-- Alt
-SUBMETA="I"	-- "Submeta" variable, to be used as a prefix for some commands
+SUBMETA="U"	-- "Submeta" variable, to be used as a prefix for some commands
 ALTMETA=""	-- No modifier for ALTMETA variable
 
 XTERM="xterm"	-- Default terminal emulator
