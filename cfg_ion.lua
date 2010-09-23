@@ -6,9 +6,7 @@ META="Mod1+"	-- Alt
 SUBMETA="I"	-- "Submeta" variable, to be used as a prefix for some commands
 ALTMETA=""	-- No modifier for ALTMETA variable
 
-XTERM="xterm -e tmux"	-- Default terminal emulator
--- TODO:  I should check whether or not tmux is available.  What about if screen
--- is and tmux is not?
+XTERM="xterm"	-- Default terminal emulator
 
 -- Some basic settings
 ioncore.set{

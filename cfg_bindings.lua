@@ -150,8 +150,10 @@ defbindings("WMPlex.toplevel", {
 	bdoc("Show the Ion manual page."),
 	kpress(META.."F1", "ioncore.exec_on(_, '::man ion3')"),
 
+	-- TODO:  I should check whether or not tmux is available.  What about
+	-- if screen is and tmux is not?
 	bdoc("Run a terminal emulator."),
-	kpress(ALTMETA.."F2", "ioncore.exec_on(_, XTERM)"),
+	kpress(ALTMETA.."F2", "ioncore.exec_on(_, 'xterm -e tmux')"),
 
 	bdoc("Query for command line to execute."),
 	kpress(ALTMETA.."F3", "mod_query.query_exec(_)"),
@@ -317,7 +319,9 @@ defbindings("WMoveresMode", {
 -- Main menu
 defmenu("mainmenu", {
 	menuentry("Run...",         "mod_query.query_exec(_)"),
-	menuentry("Terminal",       "ioncore.exec_on(_, XTERM)"),
+	-- TODO:  I should check whether or not tmux is available.  What about
+	-- if screen is and tmux is not?
+	menuentry("Terminal",       "ioncore.exec_on(_, 'xterm -e tmux')"),
 	menuentry("Lock screen",    "ioncore.exec_on(_, 'xlock -mode space')"),
 	menuentry("Help",           "mod_query.query_man(_)"),
 	menuentry("About Ion",      "mod_query.show_about_ion(_)"),
