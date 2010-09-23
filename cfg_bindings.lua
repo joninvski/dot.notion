@@ -151,7 +151,7 @@ defbindings("WMPlex.toplevel", {
 	kpress(META.."F1", "ioncore.exec_on(_, '::man ion3')"),
 
 	bdoc("Run a terminal emulator."),
-	kpress(ALTMETA.."F2", "ioncore.exec_on(_, XTERM or 'xterm')"),
+	kpress(ALTMETA.."F2", "ioncore.exec_on(_, XTERM)"),
 
 	bdoc("Query for command line to execute."),
 	kpress(ALTMETA.."F3", "mod_query.query_exec(_)"),
@@ -317,7 +317,7 @@ defbindings("WMoveresMode", {
 -- Main menu
 defmenu("mainmenu", {
 	menuentry("Run...",         "mod_query.query_exec(_)"),
-	menuentry("Terminal",       "ioncore.exec_on(_, XTERM or 'xterm')"),
+	menuentry("Terminal",       "ioncore.exec_on(_, XTERM)"),
 	menuentry("Lock screen",    "ioncore.exec_on(_, 'xlock -mode space')"),
 	menuentry("Help",           "mod_query.query_man(_)"),
 	menuentry("About Ion",      "mod_query.show_about_ion(_)"),
