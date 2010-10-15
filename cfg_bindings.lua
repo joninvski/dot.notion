@@ -152,8 +152,11 @@ defbindings("WMPlex.toplevel", {
 
 	-- TODO:  I should check whether or not tmux is available.  What about
 	-- if screen is and tmux is not?
-	bdoc("Run a terminal emulator."),
+	bdoc("Run a terminal emulator with terminal multiplexer."),
 	kpress(ALTMETA.."F2", "ioncore.exec_on(_, 'xterm -e tmux')"),
+
+	bdoc("Run a terminal emulator."),
+	kpress(META.."F2", "ioncore.exec_on(_, 'xterm')"),
 
 	bdoc("Query for command line to execute."),
 	kpress(ALTMETA.."F3", "mod_query.query_exec(_)"),
