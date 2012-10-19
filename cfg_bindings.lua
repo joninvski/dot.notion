@@ -48,6 +48,11 @@ defbindings("WScreen", {
 		bdoc("Clear all tags."),
 		kpress("T", "ioncore.tagged_clear()"),
 	}),
+	submap(META..SUBMETA_MOVE, {
+		bdoc("Move current object within the frame left/right."),
+		kpress("comma", "WFrame.dec_index(_, _sub)", "_sub:non-nil"),
+		kpress("period", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
+	}),
 
 	-- XXX: For Xinerama-like setups?
 	-- bdoc("Go to n:th screen on multihead setup."),
@@ -185,7 +190,7 @@ defbindings("WMPlex.toplevel", {
 
 	bdoc("Display context menu."),
 	--kpress(META.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
-	kpress(META.."M", "mod_query.query_menu(_, _sub, 'ctxmenu', 'Context menu:')"),
+	kpress(META.."C", "mod_query.query_menu(_, _sub, 'ctxmenu', 'Context menu:')"),
 })
 
 
@@ -253,12 +258,13 @@ defbindings("WFrame.toplevel", {
 		kpress("L", "WFrame.switch_next(_)"),
 		kpress("H", "WFrame.switch_prev(_)"),
 
-		bdoc("Move current object within the frame left/right."),
-		kpress("comma", "WFrame.dec_index(_, _sub)", "_sub:non-nil"),
-		kpress("period", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
-
 		bdoc("Attach tagged objects to this frame."),
 		kpress("A", "ioncore.tagged_attach(_)"),
+	}),
+	submap(META..SUBMETA_MOVE, {
+		bdoc("Move current object within the frame left/right."),
+		kpress("H", "WFrame.dec_index(_, _sub)", "_sub:non-nil"),
+		kpress("L", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
 	}),
 })
 

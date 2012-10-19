@@ -4,6 +4,7 @@
 
 META="Mod1+"	-- Alt
 SUBMETA="I"	-- "Submeta" variable, to be used as a prefix for some commands
+SUBMETA_MOVE="M"-- "Submeta" variable made to move frames or screens around.
 ALTMETA=""	-- No modifier for ALTMETA variable
 
 XTERM="xterm"	-- Default terminal emulator
