@@ -46,7 +46,7 @@ defbindings("WScreen", {
 		--kpress("I", "ioncore.goto_activity()"),
 
 		bdoc("Clear all tags."),
-		kpress("T", "ioncore.tagged_clear()"),
+		kpress("Y", "ioncore.tagged_clear()"),
 	}),
 	submap(META..SUBMETA_MOVE, {
 		bdoc("Move current object within the frame left/right."),
@@ -146,9 +146,6 @@ defbindings("WMPlex", {
 -- Frames for transient windows ignore this bindmap
 
 defbindings("WMPlex.toplevel", {
-	bdoc("Toggle tag of current object."),
-	kpress(META.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
-
 	bdoc("Query for manual page to be displayed."),
 	kpress(ALTMETA.."F1", "mod_query.query_man(_, '::man')"),
 
@@ -185,12 +182,17 @@ defbindings("WMPlex.toplevel", {
 	bdoc("Query for workspace to go to or create a new one."),
 	kpress(ALTMETA.."F9", "mod_query.query_workspace(_)"),
 
-	bdoc("Query for a client window to go to."),
-	kpress(META.."G", "mod_query.query_gotoclient(_)"),
 
-	bdoc("Display context menu."),
-	--kpress(META.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
-	kpress(META.."C", "mod_query.query_menu(_, _sub, 'ctxmenu', 'Context menu:')"),
+	submap(META..SUBMETA, {
+		bdoc("Toggle tag of current object."),
+		kpress("T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
+
+		bdoc("Query for a client window to go to."),
+		kpress("G", "mod_query.query_gotoclient(_)"),
+
+		bdoc("Display context menu."),
+		kpress("C", "mod_query.query_menu(_, _sub, 'ctxmenu', 'Context menu:')"),
+	}),
 })
 
 
@@ -207,10 +209,10 @@ defbindings("WFrame", {
 
 		bdoc("Show information about selected frame/window."),
 		kpress("W", "mod_query.show_tree(_, _sub)"),
-	}),
 
-	bdoc("Begin move/resize mode."),
-	kpress(META.."R", "WFrame.begin_kbresize(_)"),
+		bdoc("Begin move/resize mode."),
+		kpress("R", "WFrame.begin_kbresize(_)"),
+	}),
 
 	-- Mouse binding.
 	bdoc("Show the frame the user clicked on."),
@@ -235,10 +237,10 @@ defbindings("WFrame", {
 -- Frames for transient windows ignore this bindmap
 
 defbindings("WFrame.toplevel", {
-	bdoc("Query for a client window to attach."),
-	kpress(META.."A", "mod_query.query_attachclient(_)"),
-
 	submap(META..SUBMETA, {
+		bdoc("Query for a client window to attach."),
+		kpress("W", "mod_query.query_attachclient(_)"),
+
 		-- Display tab numbers when modifiers are released
 		submap_wait("ioncore.tabnum.show(_)"),
 

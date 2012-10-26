@@ -6,17 +6,17 @@
 -- Bindings for the tilings. 
 
 defbindings("WTiling", {
-	bdoc("Split current frame vertically."),
-	kpress(META.."S", "WTiling.split_at(_, _sub, 'bottom', true)"),
-
 	bdoc("Go to frame above/below/right/left of current frame."),
 	kpress(META.."K", "ioncore.goto_next(_sub, 'up', {no_ascend=_})"),
 	kpress(META.."J", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
 	kpress(META.."L", "ioncore.goto_next(_sub, 'right')"),
 	kpress(META.."H", "ioncore.goto_next(_sub, 'left')"),
 	submap(META..SUBMETA, {
+		bdoc("Split current frame vertically."),
+		kpress("S", "WTiling.split_at(_, _sub, 'bottom', true)"),
+
 		bdoc("Split current frame horizontally."),
-		kpress("S", "WTiling.split_at(_, _sub, 'right', true)"),
+		kpress("V", "WTiling.split_at(_, _sub, 'right', true)"),
 
 		bdoc("Destroy current frame."),
 		kpress("X", "WTiling.unsplit_at(_, _sub)"),
