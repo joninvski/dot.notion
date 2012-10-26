@@ -9,7 +9,7 @@ mod_statusbar.create{
 	fullsize=false,
 	systray=true,
 
-	template = "[ %date || load: %load ]"
+	template = "[ %date || load: %load || %df ]"
 }
 
 mod_statusbar.launch_statusd{
