@@ -5,15 +5,10 @@
 
 - Make a Lua script to organize windows in an empty workspace.
 
-- Connection through ssh (using F4) accepts parameters?
-
 - Make ksh-like completion for queries (specially filesystem queries).
 
 - When maximizing windows horizontally or vertically only, make other windows
   get their original size when we resize this window back.
-
-- Is it possible to move workspaces indexes? What about maximized windows
-  (with Alt-Enter).
 
 - Make statusbar always on top on empty workspaces and maximized windows.
 
@@ -22,17 +17,15 @@
 - Make a prompt (like F3), but that buffers stdout instead of stderr and show
   the result.
 
-- Add handling that, when Meta-C (close window) is pressed, do not make it (or
-  ask for confirmation) if the window is a terminal emulator.
-
 - Let windows that cannot be focused, but go out the view when it is on the
   top of a frame the user wants to edit. Don't know if it is possible to make
-  it only with ion, but maybe it is possible to make it with X11 programming.
+  it only with notion, but maybe it is possible to make it with X11
+  programming.
 
 - In float windows, F3 shows a prompt on the bottom of the window. That is ok,
   but following this rule strictly, the prompt doesn't appear in the visible
   area if the bottom of the window is not visible in the workspace.
 
-- Workspaces names? Let's show them in the statusbar?
+- Workspaces names or numbers? Let's show them in the statusbar?
 
 - Change frame title independently from the application settings.
