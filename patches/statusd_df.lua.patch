@@ -1,0 +1,69 @@
+--- statusd_df.lua.orig	2012-10-29 18:38:33.000000000 -0200
++++ statusd_df.lua	2012-10-29 18:38:05.000000000 -0200
+@@ -1,7 +1,3 @@
+--- Authors: Tibor Csögör <tibi@tiborius.net>
+--- License: Public domain
+--- Last Changed: 2006-11-14
+---
+ -- $Id: statusd_df.lua 60 2006-11-14 11:19:29Z tibi $
+ 
+ -- statusd_df.lua -- disk space monitor for Ion3's statusbar
+@@ -43,10 +39,12 @@
+ 
+ 
+ local defaults = {
+-   template = "[%mpoint: %avail (%availp) free]",
+-   fslist = { "/" },
++   template = "%mpoint: %used/%size (%usedp%)",
++   fslist = { "/home/silas"},
+    separator = "  ",
+-   update_interval = 1000, -- 1 second
++   update_interval = 5000,
++   important_threshold = 80,
++   critical_threshold = 90,
+ }
+                 
+ local settings = table.join(statusd.get_config("df"), defaults)
+@@ -72,6 +70,7 @@
+ local function get_df()
+    local df_table = {}
+    local f = io.popen('df -k', 'r')
++   os.execute("sleep 0.1")
+    if (f == nil) then return nil end
+    f:read("*line") -- skip header line
+    local s = f:read("*a")
+@@ -80,8 +79,9 @@
+    while (i < string.len(s)) do
+       local j, fsname, fssize, fsused, fsavail, fsusedp, mpoint
+       i, j, fsname, fssize, fsused, fsavail, fsusedp, mpoint
+-	 = string.find(s, "(/%S+)%s+(%d+)%s+(%d+)%s+(%d+)%s+(%d+)%%?%s(%S+)\n",
++	 = string.find(s, "(/%S+)%s+(%d+)%s+(%d+)%s+-?(%d+)%s+(%d+)%%?%s(%S+)\n",
+ 		       i)
++      --if (i == nil) then return nil end
+       if (i == nil) then break end
+       df_table[mpoint] = { mpoint=mpoint,
+ 	                   fs=fsname,
+@@ -99,6 +99,7 @@
+    local t = get_df()
+    if (t == nil) then return nil end
+    local df_str = ""
++   local hint = "normal"
+    for i=1, #settings.fslist do
+       local s = string.gsub(settings.template, "%%(%w+)",
+ 			    function (arg)
+@@ -107,9 +108,15 @@
+ 			       end
+ 			       return nil
+ 			    end)
++      if t[settings.fslist[i]]["usedp"] > settings.critical_threshold then
++         hint = "critical"
++      elseif t[settings.fslist[i]]["usedp"] > settings.important_threshold then
++         hint = "important"
++      end
+       df_str = df_str .. settings.separator .. s
+    end
+    df_str = string.sub(df_str, #settings.separator + 1)
++   statusd.inform("df_hint", hint)
+    statusd.inform("df", df_str)
+    df_timer:set(settings.update_interval, update_df)
+ end

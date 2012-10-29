@@ -1,0 +1,189 @@
+--- vim_bindings.lua.orig	2012-10-29 18:31:52.000000000 -0200
++++ vim_bindings.lua	2012-10-29 18:30:12.000000000 -0200
+@@ -1,8 +1,7 @@
+--- Authors: Unknown
+--- License: Unknown
+--- Last Changed: Unknown
++-- $Id: vim_bindings.lua,v 1.1 2009/03/06 19:47:27 silas Exp $
+ --
+--- vim-bindings.lua
++-- Silas' vim keybindings, forked from
++-- http://modeemi.fi/~tuomov/repos/ion-scripts-3/keybindings/vim_bindings.lua
+ --
+ -- This only affects queries.
+ -- 
+@@ -20,17 +19,24 @@
+ --	Not all unused symbols are silenced in normal mode
+ --	    (so don't type them)
+ --	Use Shift+Insert to paste from other apps, p to paste yanked text.
+---
++
+ vim={clip="",old="",oldpoint=0}
++
+ function vim.normal_mode()
++
++  inputstyle("normal")
++
+     defbindings("WEdln", {
+-	kpress("a", "{WEdln.forward(_), vim.insert_mode(), vim.savehist(_)}"),
+-	kpress("Shift+a", "{WEdln.eol(_), vim.insert_mode(), vim.savehist(_)}"),
++    kpress("a", "{WEdln.forward(_), vim.insert_mode(), " ..
++    "vim.savehist(_)}"),
++    kpress("Shift+a", "{WEdln.eol(_), vim.insert_mode(), " ..
++    "vim.savehist(_)}"),
+ 	kpress("b", "vim.multiply(WEdln.bskip_word, _)"),
+ 	kpress("Shift+b", "vim.multiply(WEdln.bskip_word, _)"),
+ 	submap("c", {
+ 	    kpress("b", "vim.yank(_, 'b', true, true)"),
+ 	    kpress("c", "vim.yank(_, 'd', true, true)"),
++      kpress("e", "vim.yank(_, 'e', true, true)"),
+ 	    kpress("h", "vim.yank(_, 'h', true, true)"),
+ 	    kpress("l", "vim.yank(_, 'l', true, true)"),
+ 	    kpress("w", "vim.yank(_, 'w', true, true)"),
+@@ -42,6 +48,7 @@
+ 	submap("d", {
+ 	    kpress("b", "vim.yank(_, 'b', true)"),
+ 	    kpress("d", "vim.yank(_, 'd', true)"),
++      kpress("e", "vim.yank(_, 'e', true)"),
+ 	    kpress("h", "vim.yank(_, 'h', true)"),
+ 	    kpress("l", "vim.yank(_, 'l', true)"),
+ 	    kpress("w", "vim.yank(_, 'w', true)"),
+@@ -50,13 +57,16 @@
+ 	    kpress("Shift+4", "vim.yank(_, 'D', true)"),
+ 	}),
+ 	kpress("Shift+d", "vim.yank(_, 'D', true)"),
+-	kpress("e", "{_:forward(), vim.multiply(WEdln.skip_word,_), _:back()}"),
+-	kpress("Shift+e", "{_:forward(), vim.multiply(WEdln.skip_word,_), _:back()}"),
++    kpress("e", "{_:forward(), " ..
++    "vim.multiply(WEdln.skip_word,_), _:back()}"),
++    kpress("Shift+e", "{_:forward(), " ..
++    "vim.multiply(WEdln.skip_word,_), _:back()}"),
+ 	kpress("f", "vim.cleardigit()"),
+ 	kpress("g", "vim.cleardigit()"),
+ 	kpress("h", "vim.multiply(WEdln.back,_)"),
+ 	kpress("i", "{vim.insert_mode(), vim.savehist(_)}"),
+-	kpress("Shift+i", "{WEdln.bol(_), vim.insert_mode(), vim.savehist(_)}"),
++    kpress("Shift+i",
++    "{WEdln.bol(_), vim.insert_mode(), vim.savehist(_)}"),
+ 	kpress("j", "vim.multiply(WEdln.history_next, _)"),
+ 	kpress("k", "vim.multiply(WEdln.history_prev, _)"),
+ 	kpress("Control+n", "vim.multiply(WEdln.history_next, _)"),
+@@ -101,25 +111,37 @@
+ 	kpress("Control+X", "vim.multiply(vim.decrement, _)"),
+ 
+ 	kpress("Shift+f", "vim.cleardigit()"),
+-	kpress("Shift+g", "vim.cleardigit()"), kpress("Shift+h", "vim.cleardigit()"),
+-	kpress("Shift+j", "vim.cleardigit()"), kpress("Shift+k", "vim.cleardigit()"), 
+-	kpress("Shift+l", "vim.cleardigit()"), kpress("Shift+m", "vim.cleardigit()"),
+-	kpress("Shift+n", "vim.cleardigit()"), kpress("Shift+o", "vim.cleardigit()"),
+-	kpress("Shift+q", "vim.cleardigit()"), kpress("Shift+r", "vim.cleardigit()"),
+-	kpress("Shift+t", "vim.cleardigit()"), kpress("Shift+u", "vim.cleardigit()"),
++    kpress("Shift+g", "vim.cleardigit()"),
++    kpress("Shift+h", "vim.cleardigit()"),
++    kpress("Shift+j", "vim.cleardigit()"),
++    kpress("Shift+k", "vim.cleardigit()"),
++    kpress("Shift+l", "vim.cleardigit()"),
++    kpress("Shift+m", "vim.cleardigit()"),
++    kpress("Shift+n", "vim.cleardigit()"),
++    kpress("Shift+o", "vim.cleardigit()"),
++    kpress("Shift+q", "vim.cleardigit()"),
++    kpress("Shift+r", "vim.cleardigit()"),
++    kpress("Shift+t", "vim.cleardigit()"),
++    kpress("Shift+u", "vim.cleardigit()"),
+ 	kpress("Shift+v", "vim.cleardigit()"),
+-	kpress("Shift+z", "vim.cleardigit()"), kpress("Shift+0", "vim.cleardigit()"),
+-	kpress("Shift+1", "vim.cleardigit()"), kpress("Shift+2", "vim.cleardigit()"), 
+-	kpress("Shift+3", "vim.cleardigit()"), kpress("Shift+5", "vim.cleardigit()"),
+-	kpress("Shift+7", "vim.cleardigit()"), kpress("Shift+8", "vim.cleardigit()"), 
++    kpress("Shift+z", "vim.cleardigit()"),
++    kpress("Shift+0", "vim.cleardigit()"),
++    kpress("Shift+1", "vim.cleardigit()"),
++    kpress("Shift+2", "vim.cleardigit()"),
++    kpress("Shift+3", "vim.cleardigit()"),
++    kpress("Shift+5", "vim.cleardigit()"),
++    kpress("Shift+7", "vim.cleardigit()"),
++    kpress("Shift+8", "vim.cleardigit()"),
+ 	kpress("Shift+9", "vim.cleardigit()"),
+     })
+ end
+ 
+ function vim.insert_mode()
+-    for _,edln in pairs(ioncore.region_list("WEdln")) do
+-	edln:clear_mark()
+-    end
++  inputstyle("insert")
++  -- TODO: tirar comments
++  --for _,edln in pairs(ioncore.region_list("WEdln")) do
++  --edln:clear_mark()
++  --enD
+     defbindings("WEdln", {
+ 	kpress("Control+w", "WEdln.bkill_word(_)"),
+ 	kpress("Control+n", "WEdln.next_completion(_, true)"),
+@@ -141,18 +163,24 @@
+ 	kpress("1", nil), kpress("2", nil), kpress("3", nil),
+ 	kpress("4", nil), kpress("5", nil), kpress("6", nil),
+ 	kpress("7", nil), kpress("8", nil), kpress("9", nil),
+-	kpress("Shift+a", nil), kpress("Shift+b", nil), kpress("Shift+c", nil),
+-	kpress("Shift+d", nil), kpress("Shift+e", nil), kpress("Shift+f", nil),
+-	kpress("Shift+g", nil), kpress("Shift+h", nil), kpress("Shift+i", nil),
+-	kpress("Shift+j", nil), kpress("Shift+k", nil), kpress("Shift+l", nil),
+-	kpress("Shift+m", nil), kpress("Shift+n", nil), kpress("Shift+o", nil),
+-	kpress("Shift+p", nil), kpress("Shift+q", nil), kpress("Shift+r", nil),
+-	kpress("Shift+s", nil), kpress("Shift+t", nil), kpress("Shift+u", nil),
+-	kpress("Shift+v", nil), kpress("Shift+w", nil), kpress("Shift+x", nil),
+-	kpress("Shift+y", nil), kpress("Shift+z", nil), kpress("Shift+0", nil),
+-	kpress("Shift+1", nil), kpress("Shift+2", nil), kpress("Shift+3", nil),
+-	kpress("Shift+4", nil), kpress("Shift+5", nil), kpress("Shift+6", nil),
+-	kpress("Shift+7", nil), kpress("Shift+8", nil), kpress("Shift+9", nil),
++    kpress("Shift+a", nil), kpress("Shift+b", nil),
++    kpress("Shift+c", nil), kpress("Shift+d", nil),
++    kpress("Shift+e", nil), kpress("Shift+f", nil),
++    kpress("Shift+g", nil), kpress("Shift+h", nil),
++    kpress("Shift+i", nil), kpress("Shift+j", nil),
++    kpress("Shift+k", nil), kpress("Shift+l", nil),
++    kpress("Shift+m", nil), kpress("Shift+n", nil),
++    kpress("Shift+o", nil), kpress("Shift+p", nil),
++    kpress("Shift+q", nil), kpress("Shift+r", nil),
++    kpress("Shift+s", nil), kpress("Shift+t", nil),
++    kpress("Shift+u", nil), kpress("Shift+v", nil),
++    kpress("Shift+w", nil), kpress("Shift+x", nil),
++    kpress("Shift+y", nil), kpress("Shift+z", nil),
++    kpress("Shift+0", nil), kpress("Shift+1", nil),
++    kpress("Shift+2", nil), kpress("Shift+3", nil),
++    kpress("Shift+4", nil), kpress("Shift+5", nil),
++    kpress("Shift+6", nil), kpress("Shift+7", nil),
++    kpress("Shift+8", nil), kpress("Shift+9", nil),
+ 	kpress("space", nil),
+ 	kpress("Shift+grave", nil),
+ 	kpress("Control+A", nil),
+@@ -161,7 +189,9 @@
+ end
+ 
+ defbindings("WInput", {
+-    kpress("Control+C", "{vim.cleardigit(), WInput.cancel(_)}"),
++  --kpress("Control+C", "{vim.cleardigit(), WInput.cancel(_)}"),
++  kpress("Control+C", "{vim.cleardigit(), WInput.cancel(_)}, " ..
++  "vim.insert_mode()"),
+     kpress("Control+F", "WInput.scrollup(_)"),
+     kpress("Control+B", "WInput.scrolldown(_)"),
+     kpress("Page_Up", "WInput.scrollup(_)"),
+@@ -169,7 +199,9 @@
+ })
+ defbindings("WEdln", {
+     kpress("Shift+Insert", "WEdln.paste(_)"),
+-    kpress("Return", "{vim.cleardigit(), WEdln.finish(_)}"),
++  --kpress("Return", "{vim.cleardigit(), WEdln.finish(_)}"),
++  kpress("Return", "{vim.cleardigit(), WEdln.finish(_), " ..
++  "vim.insert_mode()}"),
+ })
+ 
+ function vim.yank(edln, how, kill, insert)
+@@ -191,6 +223,8 @@
+ 		edln:bol()
+ 		edln:set_mark()
+ 		edln:eol()
++      elseif how=="e" then
++	edln:kill_word()
+ 	    elseif how=="h" then
+ 		edln:back()
+ 	    elseif how=="l" then
