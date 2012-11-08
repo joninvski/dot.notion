@@ -9,7 +9,9 @@ mod_statusbar.create{
 	fullsize=false,
 	systray=true,
 
-	template = "[ %date || load: %load || %df ]"
+	template = "[ %date || load: %load || %df "
+	    .. "|| mail: %maildir_Home_INBOX_new "
+	    .. "|| work mail: %maildir_Work_INBOX_new ]"
 }
 
 mod_statusbar.launch_statusd{

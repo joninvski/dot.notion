@@ -1,0 +1,19 @@
+--- statusd_maildir.lua.orig	2012-11-08 02:53:05.000000000 -0200
++++ statusd_maildir.lua	2012-11-08 02:55:03.000000000 -0200
+@@ -33,14 +33,14 @@
+ if not statusd_maildir then
+   statusd_maildir={
+       interval=10000,
+-      maildirs = {INBOX="~/Maildir/"},
++      maildirs = {Home_INBOX="~/Mail/Home/INBOX", Work_INBOX="~/Mail/Work/INBOX"},
+   }
+ end
+ 
+ local settings = table.join (statusd.get_config("maildir"), statusd_maildir)
+ 
+ local function get_num_files(directory)
+-	local f = io.popen('/bin/ls -U1 '..directory, 'r')
++	local f = io.popen('/bin/ls -f1 '..directory, 'r')
+ 	local count = 0
+ 	local line = f:read()
+ 	if line then
