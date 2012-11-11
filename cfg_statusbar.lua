@@ -24,9 +24,9 @@ mod_statusbar.create{
 	fullsize=false,
 	systray=true,
 
-	template = "[ %date || load: %load "
-	    .. "|| mail: %maildir_Home_INBOX_new"
-	    .. inboxw .. " || %df " .. apm .. " ]"
+	template = "[ %date || load: %load"
+	    .. " || mail: %maildir_Home_INBOX_new"
+	    .. inboxw .. " || %df" .. apm .. " ]"
 }
 
 mod_statusbar.launch_statusd{
