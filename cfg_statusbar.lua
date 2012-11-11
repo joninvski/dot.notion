@@ -7,8 +7,12 @@ local f = io.popen('hostname', 'r')
 os.execute("sleep 0.1")
 local hostname = f:read("*a")
 local inboxw = ""
+local apm = ""
 if hostname:find("auron") then
 	inboxw = " || work mail: %maildir_Work_INBOX_new"
+end
+if hostname:find("ghost") then
+	apm = " || apm: %apm_pct"
 end
 
 -- Create a statusbar
@@ -22,7 +26,7 @@ mod_statusbar.create{
 
 	template = "[ %date || load: %load || %df "
 	    .. "|| mail: %maildir_Home_INBOX_new"
-	    .. inboxw .. " ]"
+	    .. inboxw .. apm .. " ]"
 }
 
 mod_statusbar.launch_statusd{

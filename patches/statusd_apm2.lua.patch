@@ -1,0 +1,83 @@
+--- statusd_apm.lua.orig	2012-11-11 01:29:35.000000000 -0200
++++ statusd_apm.lua	2012-11-11 01:45:40.000000000 -0200
+@@ -17,7 +17,6 @@
+ --       add some of the following fields into your template in cfg_statusbar.lua:
+ --       %apm_ac: A/C cable on-line (connected) off-line (disconnected)
+ --       %apm_pct: percent of remaining battery
+---       %apm_estimate: time remaining based upon usage ... or whatever apm thinks.
+ --       %apm_state: Status: charging/high/low/critical
+ -- in cfg_statusbar.lua, about line 28, add the next line without the leading "--"
+ -- template="[ %date || load:% %>load_1min || battery: %apm_pct AC: %apm_ac Status: %apm_state ]",
+@@ -29,22 +28,24 @@
+ -- Most likely will only work on OpenBSD due to reliance on its output pattern.
+ function get_apm()
+     local f=io.popen('/usr/sbin/apm', 'r')
++    os.execute("sleep 0.1")
+     if not f then
+         return unknown
+     end
+     local s=f:read('*all')
+     f:close()
+-    local _, _, ac, state, pct, estimate = 
++    local _, _, state, pct, ac = 
+ 	string.find(s, 
+-                      "AC Line status: (.*)\n"..
+-		      "Battery Status: (.*)\n"..
+-		      "Remaining battery life: (.*)\n"..
+-		      "Remaining battery time: (.*)\n"
++                      "Battery charge state: (.*)\n"..
++		      "Battery remaining: (.*)\n"..
++		      "A/C adapter state: (.*)\n"
+ 		       )
+     if not state then
+ 	return unknown
+     end
+-    return state, pct, estimate, ac
++    pct = string.gsub(pct, " percent", "%%")
++    pct = string.gsub(pct, " minutes", "min")
++    return state, pct, ac
+ end
+ 
+ local function inform(key, value)
+@@ -54,30 +55,19 @@
+ local apm_timer = statusd.create_timer()
+ 
+ local function update_apm()
+-    local state, pct, estimate, ac = get_apm()
+-    local stateinf
+-    if state=="low" then
+-	stateinf = "important" 
++    local state, pct, _ = get_apm()
++    local pcthint
++    if state=="high" then
++	pcthint = "normal" 
++    elseif state == "charging" or state == "low" then
++        pcthint = "important"
++    elseif state == "critical" then
++        pcthint = "critical"
+     end
+-    if state == "critical" then
+-        stateinf = "critical"
+-    end
+-    if state == "charging" then
+-        stateinf = "important"
+-    end
+-    inform("state", state)
+-    inform("state_hint", stateinf)
++    inform("pct_hint", pcthint)
+     inform("pct", pct)
+-    inform("estimate", estimate)
+-    if ac == "off-line" then 
+-	stateinf="critical"
+-    end
+-    if ac == "on-line" then 
+-        stateinf="important"
+-    end
+-    inform("ac", ac)
+-    inform("ac_hint", stateinf)
+-    apm_timer:set(60*1000, update_apm)
++    --apm_timer:set(60*1000, update_apm)
++    apm_timer:set(1000, update_apm)
+ end
+ 
+ update_apm()
