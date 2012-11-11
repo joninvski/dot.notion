@@ -1,5 +1,5 @@
---- statusd_apm.lua.tmp.orig	2012-11-11 01:50:24.000000000 -0200
-+++ statusd_apm.lua	2012-11-11 01:54:31.000000000 -0200
+--- statusd_apm.lua.tmp.orig	2012-11-11 01:55:05.000000000 -0200
++++ statusd_apm.lua	2012-11-11 02:25:35.000000000 -0200
 @@ -17,7 +17,6 @@
  --       add some of the following fields into your template in cfg_statusbar.lua:
  --       %apm_ac: A/C cable on-line (connected) off-line (disconnected)
@@ -8,7 +8,14 @@
  --       %apm_state: Status: charging/high/low/critical
  -- in cfg_statusbar.lua, about line 28, add the next line without the leading "--"
  -- template="[ %date || load:% %>load_1min || battery: %apm_pct AC: %apm_ac Status: %apm_state ]",
-@@ -29,22 +28,24 @@
+@@ -25,26 +24,31 @@
+ 
+ local unknown = "?", "?", "?", "?"
+ 
++important_pct_threshold = 40
++critical_pct_threshold = 20
++
+ -- Runs apm utility and grabs relevant pieces from its output.
  -- Most likely will only work on OpenBSD due to reliance on its output pattern.
  function get_apm()
      local f=io.popen('/usr/sbin/apm', 'r')
@@ -39,7 +46,7 @@
  end
  
  local function inform(key, value)
-@@ -54,30 +55,18 @@
+@@ -54,30 +58,24 @@
  local apm_timer = statusd.create_timer()
  
  local function update_apm()
@@ -47,21 +54,27 @@
 -    local stateinf
 -    if state=="low" then
 -	stateinf = "important" 
-+    local state, pct, _ = get_apm()
-+    local pcthint
-+    if state=="high" then
-+	pcthint = "normal" 
-+    elseif state == "charging" or state == "low" then
-+        pcthint = "important"
-+    elseif state == "critical" then
-+        pcthint = "critical"
-     end
+-    end
 -    if state == "critical" then
 -        stateinf = "critical"
 -    end
 -    if state == "charging" then
 -        stateinf = "important"
--    end
++    local state, pct, _ = get_apm()
++    local pcthint
++    local _, _, p = string.find(pct, "(%d+)%%")
++    local _, _, min = string.find(pct, "(%d+)min")
++    p = tonumber(p)
++    min = tonumber(min)
++    -- If min == nil, it means that there is no "min" field in apm data.  Thus,
++    -- the battery is charging.  Then, show its hint as normal.
++    if p > important_pct_threshold or min == nil then
++	pcthint = "normal"
++    elseif p > critical_pct_threshold then
++        pcthint = "important"
++    else
++        pcthint = "critical"
+     end
 -    inform("state", state)
 -    inform("state_hint", stateinf)
 +    inform("pct_hint", pcthint)
