@@ -1,5 +1,5 @@
---- statusd_apm.lua.orig	2012-11-11 01:29:35.000000000 -0200
-+++ statusd_apm.lua	2012-11-11 01:45:40.000000000 -0200
+--- statusd_apm.lua.tmp.orig	2012-11-11 01:50:24.000000000 -0200
++++ statusd_apm.lua	2012-11-11 01:54:31.000000000 -0200
 @@ -17,7 +17,6 @@
  --       add some of the following fields into your template in cfg_statusbar.lua:
  --       %apm_ac: A/C cable on-line (connected) off-line (disconnected)
@@ -39,7 +39,7 @@
  end
  
  local function inform(key, value)
-@@ -54,30 +55,19 @@
+@@ -54,30 +55,18 @@
  local apm_timer = statusd.create_timer()
  
  local function update_apm()
@@ -76,8 +76,7 @@
 -    inform("ac", ac)
 -    inform("ac_hint", stateinf)
 -    apm_timer:set(60*1000, update_apm)
-+    --apm_timer:set(60*1000, update_apm)
-+    apm_timer:set(1000, update_apm)
++    apm_timer:set(20*1000, update_apm)
  end
  
  update_apm()
