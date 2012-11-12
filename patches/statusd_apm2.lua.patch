@@ -1,5 +1,5 @@
 --- statusd_apm.lua.tmp.orig	2012-11-11 01:55:05.000000000 -0200
-+++ statusd_apm.lua	2012-11-11 02:25:35.000000000 -0200
++++ statusd_apm.lua	2012-11-12 01:57:42.000000000 -0200
 @@ -17,7 +17,6 @@
  --       add some of the following fields into your template in cfg_statusbar.lua:
  --       %apm_ac: A/C cable on-line (connected) off-line (disconnected)
@@ -8,7 +8,7 @@
  --       %apm_state: Status: charging/high/low/critical
  -- in cfg_statusbar.lua, about line 28, add the next line without the leading "--"
  -- template="[ %date || load:% %>load_1min || battery: %apm_pct AC: %apm_ac Status: %apm_state ]",
-@@ -25,26 +24,31 @@
+@@ -25,6 +24,9 @@
  
  local unknown = "?", "?", "?", "?"
  
@@ -18,35 +18,38 @@
  -- Runs apm utility and grabs relevant pieces from its output.
  -- Most likely will only work on OpenBSD due to reliance on its output pattern.
  function get_apm()
-     local f=io.popen('/usr/sbin/apm', 'r')
-+    os.execute("sleep 0.1")
-     if not f then
+@@ -33,18 +35,20 @@
          return unknown
      end
      local s=f:read('*all')
-     f:close()
+-    f:close()
 -    local _, _, ac, state, pct, estimate = 
-+    local _, _, state, pct, ac = 
- 	string.find(s, 
+-	string.find(s, 
 -                      "AC Line status: (.*)\n"..
 -		      "Battery Status: (.*)\n"..
 -		      "Remaining battery life: (.*)\n"..
 -		      "Remaining battery time: (.*)\n"
-+                      "Battery charge state: (.*)\n"..
-+		      "Battery remaining: (.*)\n"..
-+		      "A/C adapter state: (.*)\n"
- 		       )
-     if not state then
+-		       )
+-    if not state then
++    if not s then
  	return unknown
      end
 -    return state, pct, estimate, ac
++    local _, _, state, pct, ac = 
++	string.find(s,
++                      "Battery charge state: (.*)\n"..
++		      "Battery remaining: (.*)\n"..
++		      "A/C adapter state: (.*)\n"
++		       )
 +    pct = string.gsub(pct, " percent", "%%")
 +    pct = string.gsub(pct, " minutes", "min")
++    print("state: " .. state)
++    print("pct: " .. pct)
 +    return state, pct, ac
  end
  
  local function inform(key, value)
-@@ -54,30 +58,24 @@
+@@ -54,30 +58,33 @@
  local apm_timer = statusd.create_timer()
  
  local function update_apm()
@@ -57,10 +60,11 @@
 -    end
 -    if state == "critical" then
 -        stateinf = "critical"
--    end
--    if state == "charging" then
--        stateinf = "important"
 +    local state, pct, _ = get_apm()
++    if state == "?" then
++	pct = "255%"
++    end
++    print(pct)
 +    local pcthint
 +    local _, _, p = string.find(pct, "(%d+)%%")
 +    local _, _, min = string.find(pct, "(%d+)min")
@@ -74,7 +78,15 @@
 +        pcthint = "important"
 +    else
 +        pcthint = "critical"
++    end
++    -- When there is load error, set pct to "?" (meaning, wait for next
++    -- iteration)
++    if (p > 100) then
++	pct = "?"
      end
+-    if state == "charging" then
+-        stateinf = "important"
+-    end
 -    inform("state", state)
 -    inform("state_hint", stateinf)
 +    inform("pct_hint", pcthint)
