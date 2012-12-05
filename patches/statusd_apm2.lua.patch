@@ -1,0 +1,107 @@
+--- statusd_apm.lua.tmp.orig	2012-11-11 01:55:05.000000000 -0200
++++ statusd_apm.lua	2012-11-12 01:57:42.000000000 -0200
+@@ -17,7 +17,6 @@
+ --       add some of the following fields into your template in cfg_statusbar.lua:
+ --       %apm_ac: A/C cable on-line (connected) off-line (disconnected)
+ --       %apm_pct: percent of remaining battery
+---       %apm_estimate: time remaining based upon usage ... or whatever apm thinks.
+ --       %apm_state: Status: charging/high/low/critical
+ -- in cfg_statusbar.lua, about line 28, add the next line without the leading "--"
+ -- template="[ %date || load:% %>load_1min || battery: %apm_pct AC: %apm_ac Status: %apm_state ]",
+@@ -25,6 +24,9 @@
+ 
+ local unknown = "?", "?", "?", "?"
+ 
++important_pct_threshold = 40
++critical_pct_threshold = 20
++
+ -- Runs apm utility and grabs relevant pieces from its output.
+ -- Most likely will only work on OpenBSD due to reliance on its output pattern.
+ function get_apm()
+@@ -33,18 +35,20 @@
+         return unknown
+     end
+     local s=f:read('*all')
+-    f:close()
+-    local _, _, ac, state, pct, estimate = 
+-	string.find(s, 
+-                      "AC Line status: (.*)\n"..
+-		      "Battery Status: (.*)\n"..
+-		      "Remaining battery life: (.*)\n"..
+-		      "Remaining battery time: (.*)\n"
+-		       )
+-    if not state then
++    if not s then
+ 	return unknown
+     end
+-    return state, pct, estimate, ac
++    local _, _, state, pct, ac = 
++	string.find(s,
++                      "Battery charge state: (.*)\n"..
++		      "Battery remaining: (.*)\n"..
++		      "A/C adapter state: (.*)\n"
++		       )
++    pct = string.gsub(pct, " percent", "%%")
++    pct = string.gsub(pct, " minutes", "min")
++    print("state: " .. state)
++    print("pct: " .. pct)
++    return state, pct, ac
+ end
+ 
+ local function inform(key, value)
+@@ -54,30 +58,33 @@
+ local apm_timer = statusd.create_timer()
+ 
+ local function update_apm()
+-    local state, pct, estimate, ac = get_apm()
+-    local stateinf
+-    if state=="low" then
+-	stateinf = "important" 
+-    end
+-    if state == "critical" then
+-        stateinf = "critical"
++    local state, pct, _ = get_apm()
++    if state == "?" then
++	pct = "255%"
++    end
++    print(pct)
++    local pcthint
++    local _, _, p = string.find(pct, "(%d+)%%")
++    local _, _, min = string.find(pct, "(%d+)min")
++    p = tonumber(p)
++    min = tonumber(min)
++    -- If min == nil, it means that there is no "min" field in apm data.  Thus,
++    -- the battery is charging.  Then, show its hint as normal.
++    if p > important_pct_threshold or min == nil then
++	pcthint = "normal"
++    elseif p > critical_pct_threshold then
++        pcthint = "important"
++    else
++        pcthint = "critical"
++    end
++    -- When there is load error, set pct to "?" (meaning, wait for next
++    -- iteration)
++    if (p > 100) then
++	pct = "?"
+     end
+-    if state == "charging" then
+-        stateinf = "important"
+-    end
+-    inform("state", state)
+-    inform("state_hint", stateinf)
++    inform("pct_hint", pcthint)
+     inform("pct", pct)
+-    inform("estimate", estimate)
+-    if ac == "off-line" then 
+-	stateinf="critical"
+-    end
+-    if ac == "on-line" then 
+-        stateinf="important"
+-    end
+-    inform("ac", ac)
+-    inform("ac_hint", stateinf)
+-    apm_timer:set(60*1000, update_apm)
++    apm_timer:set(20*1000, update_apm)
+ end
+ 
+ update_apm()
