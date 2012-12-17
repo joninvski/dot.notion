@@ -42,7 +42,7 @@ local function update_irssi()
     end
     statusd.inform("irssi_hint", hint)
     statusd.inform("irssi", windows)
-    irssi_timer:set(2000, update_irssi)
+    irssi_timer:set(4000, update_irssi)
 end
 
 update_irssi()
