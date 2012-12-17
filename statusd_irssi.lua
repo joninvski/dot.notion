@@ -35,10 +35,10 @@ local function update_irssi()
     local windows
     if table.getn(win_hi) > 0 then
 	hint = "important"
-	windows = table.concat(win_hi, ", ")
+	windows = table.concat(win_hi, ",")
     else
 	hint = "normal"
-	windows = table.concat(win_act, ", ")
+	windows = table.concat(win_act, ",")
     end
     statusd.inform("irssi_hint", hint)
     statusd.inform("irssi", windows)
