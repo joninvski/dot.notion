@@ -11,7 +11,7 @@ local apm = ""
 if hostname:find("auron") then
 	inboxw = " || work mail: %maildir_Work_INBOX_new"
 end
-if hostname:find("ghost") then
+if hostname:find("ghost") or hostname:find("rikku") then
 	apm = " || apm: %apm_pct"
 end
 
