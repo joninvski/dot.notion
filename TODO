@@ -31,3 +31,5 @@
 - Change frame title independently from the application settings.
 
 - Add key binds to mplayer running background?
+
+- Program M-[HJKL] keys for empty (not framed) workspaces too.
